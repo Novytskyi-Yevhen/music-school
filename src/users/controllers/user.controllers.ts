@@ -7,8 +7,8 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
-import { User } from 'src/entity';
 import { UsersDTO } from '../dto/usersDTO';
 import { UserService } from '../providers/user.service';
 
@@ -17,8 +17,13 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  async findAll(): Promise<User[]> {
+  async findAll() {
     return await this.userService.findAll();
+  }
+
+  @Get('/findOne')
+  async findOne(@Query('name') name: string) {
+    return await this.userService.findOne(name);
   }
 
   @Patch('/update/:id')
