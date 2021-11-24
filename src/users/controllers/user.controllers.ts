@@ -22,8 +22,8 @@ export class UserController {
   }
 
   @Get('/findOne')
-  async findOne(@Query('name') name: string) {
-    return await this.userService.findOne(name);
+  async findOneByName(@Query('name') name: string) {
+    return await this.userService.findOneByName(name);
   }
 
   @Patch('/update/:id')

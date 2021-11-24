@@ -1,6 +1,8 @@
+import { RoleDTO } from "src/role/dto";
+
 export interface UsersDTO {
     id: number;
-    role: string;
+    role: RoleDTO;
     availability: string[];
     name: string;
     password: string;

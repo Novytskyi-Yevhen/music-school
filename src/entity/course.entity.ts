@@ -9,7 +9,7 @@ export class Course{
     @Column('int')
     serviceId: number;
 
-    @Column('text')
+    @Column('varchar')
     name: string;
 
     @ManyToOne(type => Service, service => service.courses)

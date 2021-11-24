@@ -1,27 +1,21 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { Child, Order } from ".";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Child, Order, Role } from ".";
 
 @Entity()
 export class User{
     @PrimaryGeneratedColumn({type: 'int', name: 'id'})
     id: number;
 
-    @Column({type: 'text'}) 
-    role: string;
-
-    @Column("text", {array: true})
-    availability: string[];
-
-    @Column('text')
+    @Column('varchar')
     name: string;
 
-    @Column('text')
+    @Column('varchar')
     password: string;
 
-    @Column('text')
+    @Column('varchar')
     email: string;
 
-    @Column('text')
+    @Column('varchar')
     phone: string;
 
     
@@ -30,5 +24,8 @@ export class User{
 
     @OneToMany(type => Child, child => child.user)
     childs: Child[];
+
+    @ManyToOne(type => Role, role => role.users)
+    role: Role;
 
 }

@@ -9,10 +9,10 @@ export class Child{
     @Column('int')
     userId: number;
 
-    @Column('text')
+    @Column('varchar')
     name: string;
 
-    @Column('text')
+    @Column('varchar')
     gender: string;
 
     @Column('timestamp')

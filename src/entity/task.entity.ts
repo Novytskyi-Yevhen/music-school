@@ -6,13 +6,13 @@ export class Task{
     @PrimaryGeneratedColumn({type: 'int'})
     id: number;
 
-    @Column('text')
+    @Column('varchar')
     name: string;
 
-    @Column('text')
+    @Column('varchar')
     description: string;
 
-    @Column('text')
+    @Column('varchar')
     type: string;
 
     @OneToMany(type => Board, board => board.task)

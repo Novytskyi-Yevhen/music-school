@@ -13,7 +13,7 @@ export class Order{
     @OneToOne(type => Service, service => service.order)
     service: Service;
 
-    @Column('text')
+    @Column('varchar')
     instrument: string;
 
     @Column('int')
@@ -22,7 +22,7 @@ export class Order{
     @Column('timestamp')
     date: Date;
 
-    @Column('text')
+    @Column('varchar')
     timeSlot: string;
 
     @Column('int')

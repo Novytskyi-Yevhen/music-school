@@ -9,7 +9,7 @@ export class Board{
     @Column('int')
     taskId: number;
 
-    @Column('text')
+    @Column('varchar')
     name: string
 
     @ManyToOne(type => Task, task => task.boards)

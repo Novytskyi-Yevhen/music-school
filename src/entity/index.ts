@@ -6,3 +6,4 @@ export * from './order.entity';
 export * from './room.entity';
 export * from './service.entity';
 export * from './task.entity';
+export * from './role.entity';
