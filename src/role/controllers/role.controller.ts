@@ -9,7 +9,7 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { defaultRole } from 'src/defaultRole';
+import { defaultRole } from 'src/config';
 import { RoleDTO } from '../dto';
 import { RoleService } from '../providers';
 

@@ -5,9 +5,10 @@ import { AuthService } from './providers/index';
 import { LocalStrategy, JwtStrategy } from './strategy/index';
 import * as controllers from './controllers/index';
 import { JwtModule } from '@nestjs/jwt';
+import { RoleModule } from 'src/role/role.module';
 require('dotenv').config();
 @Module({
-  imports: [UserModule, PassportModule,
+  imports: [UserModule, RoleModule, PassportModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET,
       signOptions: {expiresIn: '1h'}

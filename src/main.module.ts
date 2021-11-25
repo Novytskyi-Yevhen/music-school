@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
-import { Board, Child, Course, Order, Role, Room, Service, Task, User } from './entity';
+import { RolesGuard } from './common/guards/roles.guard';
+import { Board, Child, Course, Order, Role, Room, Service, Task, User } from './shared/entity';
 import { RoleModule } from './role/role.module';
 import { UserModule } from './users/user.module';
 require('dotenv').config();
@@ -22,5 +23,9 @@ require('dotenv').config();
       synchronize: true
     })
   ],
+  providers: [{
+    provide: 'APP_GUARD',
+    useClass: RolesGuard,
+  }]
 })
 export class MainModule {}

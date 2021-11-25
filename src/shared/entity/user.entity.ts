@@ -25,7 +25,7 @@ export class User{
     @OneToMany(type => Child, child => child.user)
     childs: Child[];
 
-    @ManyToOne(type => Role, role => role.users)
+    @ManyToOne(type => Role, role => role.users, {eager: true})
     role: Role;
 
 }
