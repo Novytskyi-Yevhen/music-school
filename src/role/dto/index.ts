@@ -1,1 +1,1 @@
-export * from './roleDTO';
+export * from './RoleDTO';

@@ -6,14 +6,15 @@ import { UserService } from 'src/users/providers';
 export class RolesGuard implements CanActivate {
   constructor(private reflector: Reflector, private userService: UserService) {}
   async canActivate(context: ExecutionContext) {
-    const roles = this.reflector.getAllAndOverride<string[]>('roles', [
+    let roles = this.reflector.getAllAndOverride<string[]>('roles', [
       context.getHandler(), // Method Roles
       context.getClass(), // Controller Roles
-    ]).map(value => value.toLowerCase());
+    ]);
     
     if (!roles) {
         return true;
     }
+    roles = roles.map(value => value.toLowerCase());
     const {id} = context.switchToHttp().getRequest().query;
     const user = await this.userService.findOneById(id);
     return roles.includes(user.role.name.toLowerCase());

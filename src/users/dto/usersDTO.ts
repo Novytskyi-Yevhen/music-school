@@ -1,10 +1,25 @@
-import { RoleDTO } from 'src/role/dto';
+import {IsEmail, ValidateNested, IsNotEmpty, IsObject, MinLength, MaxLength, IsPhoneNumber } from 'class-validator';
+import {Type} from 'class-transformer';
+import { IdDTO } from 'src/public.dto';
 
-export interface UsersDTO {
-  id: number;
+export class UsersDTO {
+  @IsNotEmpty()
   name: string;
+
+  @IsNotEmpty()
+  @MinLength(5)
+  @MaxLength(15)
   password: string;
+
+  @IsEmail()
   email: string;
+
+  @IsPhoneNumber()
   phone: string;
-  role: {id: number};
+
+  @IsNotEmpty()
+  @IsObject()
+  @ValidateNested()
+  @Type(() => IdDTO)
+  role: IdDTO;
 }
