@@ -32,7 +32,7 @@ export class RoleController {
   }
 
   @Post('/create')
-  async createUser(@Body() data: RoleDTO) {
+  async createRole(@Body() data: RoleDTO) {
     return await this.roleService.create(data);
   }
   @Delete('/delete/:id')
