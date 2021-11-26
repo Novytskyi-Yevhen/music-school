@@ -13,9 +13,10 @@ import {
       const ctx = host.switchToHttp();
       const request = ctx.getRequest();
       const response = ctx.getResponse();
-  
+      
+      const responseMessage = (exception as any).response?.message || exception?.message;
       const statusCode = exception instanceof HttpException ? exception.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR
-      const prodMessage = exception instanceof HttpException ?  exception.message : 'Internal server error'
+      const prodMessage = exception instanceof HttpException ?  responseMessage : 'Internal server error'
   
       const devErrorResponse: any = {
         statusCode,
@@ -23,7 +24,7 @@ import {
         path: request.url,
         method: request.method,
         errorName: exception?.name,
-        message: exception?.message,
+        message: responseMessage,
         body: request.body,
         query: request.query
       };

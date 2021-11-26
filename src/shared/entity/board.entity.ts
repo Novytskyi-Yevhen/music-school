@@ -6,9 +6,6 @@ export class Board{
     @PrimaryGeneratedColumn({type: 'int'})
     id: number;
 
-    @Column('int')
-    taskId: number;
-
     @Column('varchar')
     name: string
 
