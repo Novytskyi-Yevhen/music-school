@@ -14,9 +14,9 @@ import {
   MaxLength,
   IsPhoneNumber,
   ValidateNested,
+  IsArray
 } from 'class-validator';
 import { Type } from 'class-transformer';
-import { IdDTO } from 'src/public.dto';
 
 @Entity()
 export class User {
@@ -42,15 +42,19 @@ export class User {
   phone: string;
 
   @OneToMany((type) => Order, (order) => order.user)
+  @IsArray()
+  @IsObject({each: true})
   orders: Order[];
 
   @OneToMany((type) => Child, (child) => child.user)
+  @IsArray()
+  @IsObject({each: true})
   childs: Child[];
 
   @ManyToOne((type) => Role, (role) => role.users, { eager: true })
   @IsNotEmpty()
   @IsObject()
   @ValidateNested()
-  @Type(() => IdDTO)
+  @Type(() => Role)
   role: Role;
 }

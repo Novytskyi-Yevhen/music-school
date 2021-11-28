@@ -1,33 +1,51 @@
-import { Column, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
-import { Service, User } from ".";
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Service, User } from '.';
+import {
+  IsNotEmpty,
+  IsObject,
+  ValidateNested,
+  IsDate,
+  IsNotEmptyObject,
+} from 'class-validator';
+
+import { Type } from 'class-transformer';
 
 @Entity()
-export class Order{
-    @PrimaryGeneratedColumn({type: "int"})
-    id: number;
+export class Order {
+  @PrimaryGeneratedColumn({ type: 'int' })
+  id: number;
 
-    @Column('int')
-    userId: number;
+  @ManyToOne((type) => Service, (service) => service.orders)
+  @ValidateNested()
+  @Type(() => Service)
+  @IsNotEmptyObject()
+  @IsObject()
+  service: Service;
 
-    @Column('int')
-    @OneToOne(type => Service, service => service.order)
-    service: Service;
+  @Column('varchar')
+  instrument: string;
 
-    @Column('varchar')
-    instrument: string;
+  @Column('timestamp')
+  @IsDate()
+  @IsNotEmptyObject()
+  date: Date;
 
-    @Column('int')
-    teacherId: number;
+  @Column('varchar')
+  @IsNotEmpty()
+  timeSlot: string;
 
-    @Column('timestamp')
-    date: Date;
+  @Column('int')
+  roomId: number;
 
-    @Column('varchar')
-    timeSlot: string;
-
-    @Column('int')
-    roomId: number;
-
-    @ManyToOne(type => User, user => user.orders)
-    user: User;
+  @ManyToOne((type) => User, (user) => user.orders)
+  @IsNotEmptyObject()
+  @ValidateNested()
+  @Type(() => User)
+  user: User;
 }

@@ -1,17 +1,21 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { Service } from ".";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Service } from '.';
 
+import { IsNotEmpty, ValidateNested, IsNotEmptyObject } from 'class-validator';
+
+import { Type } from 'class-transformer';
 @Entity()
-export class Room{
-    @PrimaryGeneratedColumn({type: 'int'})
-    id: number;
+export class Room {
+  @PrimaryGeneratedColumn({ type: 'int' })
+  id: number;
 
-    @Column('int')
-    serviceId: number;
+  @Column('varchar')
+  @IsNotEmpty()
+  name: string;
 
-    @Column('varchar')
-    name: string;
-
-    @ManyToOne(type => Service, service => service.rooms)
-    room: Service;
+  @ManyToOne((type) => Service, (service) => service.rooms)
+  @IsNotEmptyObject()
+  @ValidateNested()
+  @Type(() => Service)
+  service: Service;
 }
