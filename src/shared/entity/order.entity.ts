@@ -40,9 +40,6 @@ export class Order {
   @IsNotEmpty()
   timeSlot: string;
 
-  @Column('int')
-  roomId: number;
-
   @ManyToOne((type) => User, (user) => user.orders)
   @IsNotEmptyObject()
   @ValidateNested()

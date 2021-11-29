@@ -6,10 +6,23 @@ import { Board, Child, Course, Order, Role, Room, Service, Task, User } from './
 import { RoleModule } from './role/role.module';
 import { UserModule } from './users/user.module';
 import { HTTPLogger } from './common/logger/http.logger';
+import { OrderModule } from './order/order.module';
+import { CourseModule } from './course/course.module';
+import { ChildModule } from './child/child.module';
+import { ServiceModule } from './service/service.module';
+import { RoomModule } from './room/room.module';
+import { TaskModule } from './task/task.module';
+import { BoardModule } from './board/board.module';
 require('dotenv').config();
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Child, Order, Service, Course, Room, Task, Board]),
+    BoardModule,
+    TaskModule,
+    RoomModule,
+    ServiceModule,
+    ChildModule,
+    CourseModule,
+    OrderModule,
     UserModule,
     AuthModule,
     RoleModule,
