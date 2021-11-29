@@ -12,18 +12,26 @@ import {
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards';
 import { Roles } from 'src/common/decorators/roles.decorators';
+import { AbstractCRUDController } from 'src/public/controllers';
+import { User } from 'src/shared/entity';
 import { UsersDTO } from '../dto/usersDTO';
 import { UserService } from '../providers/user.service';
 
 @Controller('user')
-export class UserController {
-  constructor(private readonly userService: UserService) {}
-  
+export class UserController extends AbstractCRUDController<
+  UsersDTO,
+  User,
+  UserService
+> {
+  constructor(private readonly userService: UserService) {
+    super(userService, 'User');
+  }
+
   @UseGuards(JwtAuthGuard)
   @Roles('admin')
   @Get()
   async findAll() {
-    return await this.userService.findAll();
+    return await super.findAll();
   }
 
   @UseGuards(JwtAuthGuard)
@@ -36,22 +44,22 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   @Roles('admin')
   @Get('/findOneById')
-  async findOneById(@Query('id') id: number){
-    return await this.userService.findOneById(id);
+  async findOneById(@Query('id') id: number) {
+    return await super.findOneById(id);
   }
 
   @UseGuards(JwtAuthGuard)
   @Roles('admin')
   @Patch('/update/:id')
   async update(@Param('id') id: number, @Body() data: Partial<UsersDTO>) {
-    return await this.userService.update(id, data);
+    return await super.update(id, data);
   }
 
   @UseGuards(JwtAuthGuard)
   @Roles('admin')
   @Post('/create')
   async createUser(@Body() data: UsersDTO) {
-    return await this.userService.create(data);
+    return await super.create(data);
   }
 
   @UseGuards(JwtAuthGuard)
