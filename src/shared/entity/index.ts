@@ -7,3 +7,5 @@ export * from './room.entity';
 export * from './service.entity';
 export * from './task.entity';
 export * from './role.entity';
+export * from './chat.entity';
+export * from './message.entity';

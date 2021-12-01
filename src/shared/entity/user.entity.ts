@@ -1,11 +1,13 @@
 import {
   Column,
   Entity,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Child, Order, Role } from '.';
+import { Chat, Child, Message, Order, Role } from '.';
 import {
   IsEmail,
   IsNotEmpty,
@@ -57,4 +59,11 @@ export class User {
   @ValidateNested()
   @Type(() => Role)
   role: Role;
+
+  @ManyToMany(() => Chat, chat => chat.users)
+  @JoinTable()
+  chats: Promise<Chat[]>;
+
+  @OneToMany(() => Message, message => message.user)
+  messages: Message[];
 }

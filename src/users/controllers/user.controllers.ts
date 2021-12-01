@@ -55,8 +55,8 @@ export class UserController extends AbstractCRUDController<
     return await super.update(id, data);
   }
 
-  @UseGuards(JwtAuthGuard)
-  @Roles('admin')
+  // @UseGuards(JwtAuthGuard)
+  // @Roles('admin')
   @Post('/create')
   async createUser(@Body() data: UsersDTO) {
     return await super.create(data);

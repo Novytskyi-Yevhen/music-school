@@ -12,9 +12,9 @@ export abstract class GenericService<T> {
     return await this.repository.findOne(id);
   }
   async create(data: DeepPartial<T>): Promise<T> {
-    const newUser = this.repository.create(data);
-    await this.repository.save(newUser);
-    return newUser;
+    const newObject = this.repository.create(data);
+    await this.repository.save(newObject);
+    return newObject;
   }
   async delete(id: number): Promise<DeleteResult> {
     return await this.repository.delete(id);
