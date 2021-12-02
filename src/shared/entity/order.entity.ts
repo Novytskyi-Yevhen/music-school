@@ -1,6 +1,7 @@
 import {
   Column,
   Entity,
+  JoinTable,
   ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -15,6 +16,7 @@ import {
 } from 'class-validator';
 
 import { Type } from 'class-transformer';
+import { Instrument } from './instrument.entity';
 
 @Entity()
 export class Order {
@@ -28,8 +30,9 @@ export class Order {
   @IsObject()
   service: Service;
 
-  @Column('varchar')
-  instrument: string;
+  @OneToOne(() => Instrument)
+  @JoinTable()
+  instrument: Instrument;
 
   @Column('timestamp')
   @IsDate()

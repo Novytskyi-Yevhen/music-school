@@ -1,14 +1,8 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { User } from ".";
+import { Column, Entity, JoinTable, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Order, User } from ".";
 import {
-    IsEmail,
     IsNotEmpty,
-    IsObject,
-    MinLength,
-    MaxLength,
-    IsPhoneNumber,
     ValidateNested,
-    IsArray,
     IsDate,
     IsNotEmptyObject,
     IsIn
@@ -38,4 +32,8 @@ export class Child{
     @Type(() => User)
     @IsNotEmptyObject()
     user: User;
+
+    @OneToOne(() => Order)
+    @JoinTable()
+    order: Order;
 }

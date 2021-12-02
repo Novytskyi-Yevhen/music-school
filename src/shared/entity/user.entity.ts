@@ -5,6 +5,7 @@ import {
   ManyToMany,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Chat, Child, Message, Order, Role } from '.';
@@ -19,6 +20,7 @@ import {
   IsArray
 } from 'class-validator';
 import { Type } from 'class-transformer';
+import { Teacher } from './teacher.entity';
 
 @Entity()
 export class User {
@@ -66,4 +68,8 @@ export class User {
 
   @OneToMany(() => Message, message => message.user)
   messages: Message[];
+
+  @OneToOne(() => Teacher)
+  @JoinTable()
+  teacher: Teacher;
 }

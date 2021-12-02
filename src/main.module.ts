@@ -2,7 +2,21 @@ import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { RolesGuard } from './common/guards/roles.guard';
-import { Board, Chat, Child, Course, Message, Order, Role, Room, Service, Task, User } from './shared/entity';
+import {
+  Board,
+  Chat,
+  Child,
+  Course,
+  Instrument,
+  Message,
+  Order,
+  Role,
+  Room,
+  Service,
+  Task,
+  Teacher,
+  User,
+} from './shared/entity';
 import { RoleModule } from './role/role.module';
 import { UserModule } from './users/user.module';
 import { HTTPLogger } from './common/logger/http.logger';
@@ -14,14 +28,18 @@ import { RoomModule } from './room/room.module';
 import { TaskModule } from './task/task.module';
 import { BoardModule } from './board/board.module';
 import { GatewayModule } from './websocket/gateway.module';
-import {  RoomGateway } from './websocket/gateway';
+import { RoomGateway } from './websocket/gateway';
 import { ChatModule } from './chat/chat.module';
 import { MessageModule } from './message/message.module';
+import { InstrumentModule } from './instrument/instrument.module';
+import { TeacherModule } from './teacher/teacher.module';
 require('dotenv').config();
 @Module({
   imports: [
     // TypeOrmModule.forFeature([Message, Chat]),
     // GatewayModule,
+    TeacherModule,
+    InstrumentModule,
     MessageModule,
     ChatModule,
     BoardModule,
@@ -41,17 +59,32 @@ require('dotenv').config();
       username: process.env.POSTGRES_USER || 'user',
       password: process.env.POSTGRES_PASSWORD || 'pg_pass',
       database: process.env.POSTGRES_DB_NAME || 'postgres',
-      entities: [User, Child, Order, Service, Course, Room, Task, Board, Role, Message, Chat],
+      entities: [
+        User,
+        Child,
+        Order,
+        Service,
+        Course,
+        Room,
+        Task,
+        Board,
+        Role,
+        Message,
+        Chat,
+        Teacher,
+        Instrument,
+      ],
       synchronize: true,
-    })
+    }),
   ],
-  providers: [{
-    provide: 'APP_GUARD',
-    useClass: RolesGuard,
-  }, 
-  // AppGateway,
-  RoomGateway
-]
+  providers: [
+    {
+      provide: 'APP_GUARD',
+      useClass: RolesGuard,
+    },
+    // AppGateway,
+    RoomGateway,
+  ],
 })
 export class MainModule {
   configure(consumer: MiddlewareConsumer): void {

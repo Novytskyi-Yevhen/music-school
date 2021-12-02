@@ -9,3 +9,5 @@ export * from './task.entity';
 export * from './role.entity';
 export * from './chat.entity';
 export * from './message.entity';
+export * from './instrument.entity';
+export * from './teacher.entity';
