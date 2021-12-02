@@ -11,14 +11,14 @@ import {
 import { Server, Socket } from 'socket.io';
 import { ChatService } from 'src/chat/providers';
 import { MessageService } from 'src/message/providers';
-import { Chat } from 'src/shared/entity';
 import { UserService } from 'src/users/providers';
+
 @WebSocketGateway({
   cors: {
     origin: '*',
   },
 })
-export class AppGateway
+export class RoomGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
   @WebSocketServer() server: Server;
@@ -34,47 +34,63 @@ export class AppGateway
     @MessageBody('message') message: string,
     @MessageBody('userId') userId: number,
     @MessageBody('chatId') chatId: number,
+    socket: Socket,
   ) {
     const newMessage = await this.messageService.create({
-      user: {id: userId},
+      user: { id: userId },
       text: message,
       chat: { id: chatId },
     });
-    this.server.emit('newMessage', newMessage);
+    socket.to(`${chatId}`).emit('newMessage', { message: newMessage });
     return newMessage;
   }
 
   @SubscribeMessage('getMessages')
-  async getMessages(@MessageBody('chatId') chatId: number) {
-    const data = await this.chatService.findOneById(chatId);    
-    return data.messages;
+  async getMessages(@MessageBody('chatId') chatId: number | { id: number }[]) {
+    if (typeof chatId === 'number') {
+      const data = await this.chatService.findOneById(chatId);
+      return data.messages;
+    } else {
+      const chatsId = chatId.map(elem => elem.id);
+      return await this.chatService.getUserChats(chatsId);
+    }
   }
 
   @SubscribeMessage('getChats')
   async getChats(@MessageBody('userId') userId) {
     const data = await this.userService.findOneById(userId);
-    return await data.chats;    
+    return await data.chats;
   }
 
-  @SubscribeMessage('getGeneralChatId')
-  async getGeneralChatId() {
-    return await this.chatService.getGeneralChatId();
-  }
-
-  @SubscribeMessage('getUsersId')
-  async getUsersId(){
-      return (await this.userService.findAll()).map(elem => elem.id);
+  @SubscribeMessage('createRoom')
+  async createRoom(
+    @MessageBody('usersId') usersId: { id: number }[],
+    socket: Socket,
+  ) {
+    const chat = await this.chatService.create({
+      users: usersId,
+      name: usersId.join(''),
+    });
+    socket.join(`${chat.id}`);
+    socket.to(`${chat.id}`).emit('RoomCreated', { room: `${chat.id}` });
   }
 
   afterInit(server: Server) {
     // когда он срабатывает?
     this.logger.log('Init');
   }
-  handleDisconnect(client: Socket) {
-    this.logger.log(`Client disconnected: ${client.id}`);
+  handleDisconnect(socket: Socket) {
+    this.logger.log(`Client disconnected: ${socket.id}`);
   }
 
-  handleConnection(client: Socket) {
-    this.logger.log(`Client connected: ${client.id}`);
+  async handleConnection(
+    socket: Socket,
+    @MessageBody('userId') userId: number,
+  ) {
+    const chats = await this.getChats(userId);
+    chats.forEach((elem) => {
+      socket.join(`${elem.id}`);
+    });
+    this.logger.log(`Client connected: ${socket.id}`);
   }
 }

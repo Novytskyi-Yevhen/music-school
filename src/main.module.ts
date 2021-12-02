@@ -13,15 +13,15 @@ import { ServiceModule } from './service/service.module';
 import { RoomModule } from './room/room.module';
 import { TaskModule } from './task/task.module';
 import { BoardModule } from './board/board.module';
-import { AppModule } from './websocket/app.module';
-import { AppGateway } from './websocket/app.gateway';
+import { GatewayModule } from './websocket/gateway.module';
+import {  RoomGateway } from './websocket/gateway';
 import { ChatModule } from './chat/chat.module';
 import { MessageModule } from './message/message.module';
 require('dotenv').config();
 @Module({
   imports: [
     // TypeOrmModule.forFeature([Message, Chat]),
-    // AppModule,
+    // GatewayModule,
     MessageModule,
     ChatModule,
     BoardModule,
@@ -49,7 +49,9 @@ require('dotenv').config();
     provide: 'APP_GUARD',
     useClass: RolesGuard,
   }, 
-  AppGateway]
+  // AppGateway,
+  RoomGateway
+]
 })
 export class MainModule {
   configure(consumer: MiddlewareConsumer): void {
