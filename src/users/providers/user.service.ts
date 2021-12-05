@@ -15,4 +15,7 @@ export class UserService extends GenericService<User> {
   async findOneByName(name: string) {
     return await this.usersRepository.findOne({ name });
   }
+  async findOneByGoogleId(googleId: string){
+    return await this.usersRepository.findOne({googleId})
+  }
 }

@@ -3,6 +3,7 @@ import { JwtService } from "@nestjs/jwt";
 import { User } from "src/shared/entity";
 import { UsersDTO } from "src/users/dto/usersDTO";
 import { UserService } from "src/users/providers";
+import { Request } from "express";
 
 @Injectable()
 export class AuthService{
@@ -20,11 +21,14 @@ export class AuthService{
         return null;
     }
 
-    async login(user: Partial<UsersDTO>){
+    async jwtLogin(user: Partial<UsersDTO>, eventType: 'login' | 'register'){
         return {
             accessToken: this.jwtService.sign({
                 username: user.name 
-            })
+            }),
+            eventType
         }
     }
+
+    
 }

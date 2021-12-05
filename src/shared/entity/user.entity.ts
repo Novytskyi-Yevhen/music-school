@@ -17,7 +17,8 @@ import {
   MaxLength,
   IsPhoneNumber,
   ValidateNested,
-  IsArray
+  IsArray,
+  IsString
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { Teacher } from './teacher.entity';
@@ -27,12 +28,15 @@ export class User {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
 
+  @Column('varchar', {unique: true, nullable: true})
+  @IsString()
+  googleId: string;
+
   @Column('varchar')
   @IsNotEmpty()
   name: string;
 
-  @Column('varchar')
-  @IsNotEmpty()
+  @Column('varchar', {nullable: true})
   @MinLength(5)
   @MaxLength(15)
   password: string;
@@ -41,7 +45,7 @@ export class User {
   @IsEmail()
   email: string;
 
-  @Column('varchar')
+  @Column('varchar', {nullable: true})
   @IsPhoneNumber()
   phone: string;
 
