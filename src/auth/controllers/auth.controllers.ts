@@ -58,6 +58,21 @@ export class AuthController {
   async facebookRedirect(@Req() req) {
     return await this.socialRegisterOrLogin(req);
   }
+  @Get('auth/redirect/linkedin')
+  @UseGuards(AuthGuard('linkedin'))
+  async linkedinRedirect(@Req() req) {
+    return await this.socialRegisterOrLogin(req);
+  }
+
+  //   @Get('auth/redirect/twitter')
+  //   @UseGuards(AuthGuard('twitter'))
+  //   async twitterRedirect(@Req() req) {
+  //       console.log(req.user);
+
+  //       throw new Error("");
+
+  //     return await this.socialRegisterOrLogin(req);
+  //   }
 
   @Get('google')
   @UseGuards(AuthGuard('google'))
@@ -66,6 +81,14 @@ export class AuthController {
   @Get('facebook')
   @UseGuards(AuthGuard('facebook'))
   async facebookAuth() {}
+
+  @Get('linkedin')
+  @UseGuards(AuthGuard('linkedin'))
+  async linkedinAuth() {}
+
+  //   @Get('twitter')
+  //   @UseGuards(AuthGuard('twitter'))
+  //   async twitterAuth() {}
 
   private async socialRegisterOrLogin(req) {
     if (!req.user) {
@@ -101,7 +124,9 @@ export class AuthController {
         req.user.provider === 'google' ? req.user.socialId : null;
       const facebookId =
         req.user.provider === 'facebook' ? req.user.socialId : null;
-      const newUser = { facebookId, googleId, phone, ...req.user };
+      const linkedinId =
+        req.user.provider === 'linkedin' ? req.user.socialId : null;
+      const newUser = { linkedinId, facebookId, googleId, phone, ...req.user };
 
       return await this.register(newUser);
     } else {

@@ -36,6 +36,10 @@ export class User {
   @IsString()
   facebookId: string;
 
+  @Column('varchar', {unique: true, nullable: true})
+  @IsString()
+  linkedinId: string;
+
   @Column('varchar')
   @IsNotEmpty()
   name: string;

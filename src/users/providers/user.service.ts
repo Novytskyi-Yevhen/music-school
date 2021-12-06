@@ -21,6 +21,9 @@ export class UserService extends GenericService<User> {
   private async findOneByFacebookId(facebookId: string) {
     return await this.usersRepository.findOne({ facebookId });
   }
+  private async findOneByLinkedinId(facebookId: string) {
+    return await this.usersRepository.findOne({ facebookId });
+  }
 
   async getUserBySocialId(provider: string, id: string) {
     let user;
@@ -30,6 +33,9 @@ export class UserService extends GenericService<User> {
         break;
       case 'google':
         user = await this.findOneByGoogleId(id);
+        break;
+      case 'linkedin':
+        user = await this.findOneByLinkedinId(id);
         break;
       default:
         user = null;
