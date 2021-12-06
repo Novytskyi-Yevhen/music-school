@@ -32,6 +32,10 @@ export class User {
   @IsString()
   googleId: string;
 
+  @Column('varchar', {unique: true, nullable: true})
+  @IsString()
+  facebookId: string;
+
   @Column('varchar')
   @IsNotEmpty()
   name: string;

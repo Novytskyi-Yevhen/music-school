@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
 import { UserModule } from 'src/users/user.module';
 import { AuthService } from './providers/index';
-import { LocalStrategy, JwtStrategy, GoogleStrategy } from './strategy/index';
+import { LocalStrategy, JwtStrategy, GoogleStrategy, FacebookStrategy } from './strategy/index';
 import * as controllers from './controllers/index';
 import { JwtModule } from '@nestjs/jwt';
 import { RoleModule } from 'src/role/role.module';
@@ -16,7 +16,7 @@ require('dotenv').config();
     })
   ],
   controllers: Object.values(controllers),
-  providers: [AuthService, LocalStrategy, JwtStrategy, GoogleStrategy],
+  providers: [AuthService, LocalStrategy, JwtStrategy, GoogleStrategy, FacebookStrategy],
   exports: [AuthService]
 })
-export class AuthModule {}
+export class AuthModule {} 

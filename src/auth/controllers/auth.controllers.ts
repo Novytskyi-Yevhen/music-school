@@ -48,30 +48,64 @@ export class AuthController {
     return await this.authService.jwtLogin(newUser, 'register');
   }
 
-  @Get('auth/redirect')
+  @Get('auth/redirect/google')
   @UseGuards(AuthGuard('google'))
   async googleRedirect(@Req() req) {
+    return await this.socialRegisterOrLogin(req);
+  }
+  @Get('auth/redirect/facebook')
+  @UseGuards(AuthGuard('facebook'))
+  async facebookRedirect(@Req() req) {
+    return await this.socialRegisterOrLogin(req);
+  }
+
+  @Get('google')
+  @UseGuards(AuthGuard('google'))
+  async googleAuth() {}
+
+  @Get('facebook')
+  @UseGuards(AuthGuard('facebook'))
+  async facebookAuth() {}
+
+  private async socialRegisterOrLogin(req) {
     if (!req.user) {
       throw new HttpException('BadRequest', HttpStatus.BAD_REQUEST);
     }
-    const user = await this.userService.findOneByGoogleId(req.user.googleId);
-    if (!user) {
-      let response = await firstValueFrom(
-        this.httpService.get(
-          `https://people.googleapis.com/v1/people/${req.user.googleId}?personFields=phoneNumbers`,
-          { headers: { Authorization: `Bearer ${req.user.accessToken}` } },
-        ),
-      );
 
-      const phone = response.data?.phoneNumbers[0]?.canonicalForm;
-      const newUser = { phone, ...req.user };
+    let user = await this.userService.getUserBySocialId(
+      req.user.provider,
+      req.user.socialId,
+    );
+    if (user === null) {
+      throw new HttpException(
+        'This provider does not supported',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    if (!user) {
+      let response = null;
+      if (req.user.provider === 'google') {
+        response = await firstValueFrom(
+          this.httpService.get(
+            `https://people.googleapis.com/v1/people/${req.user.socialId}?personFields=phoneNumbers`,
+            { headers: { Authorization: `Bearer ${req.user.accessToken}` } },
+          ),
+        );
+      }
+
+      const phone = response?.data?.phoneNumbers
+        ? response.data?.phoneNumbers[0]?.canonicalForm
+        : null;
+      const googleId =
+        req.user.provider === 'google' ? req.user.socialId : null;
+      const facebookId =
+        req.user.provider === 'facebook' ? req.user.socialId : null;
+      const newUser = { facebookId, googleId, phone, ...req.user };
 
       return await this.register(newUser);
     } else {
       return await this.login(req);
     }
   }
-  @Get('google')
-  @UseGuards(AuthGuard('google'))
-  async googleAuth() {}
 }
