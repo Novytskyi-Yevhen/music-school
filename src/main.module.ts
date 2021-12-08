@@ -7,6 +7,7 @@ import {
   Chat,
   Child,
   Course,
+  File,
   Instrument,
   Message,
   Order,
@@ -33,11 +34,13 @@ import { ChatModule } from './chat/chat.module';
 import { MessageModule } from './message/message.module';
 import { InstrumentModule } from './instrument/instrument.module';
 import { TeacherModule } from './teacher/teacher.module';
+import { FileModule } from './file/file.module';
 require('dotenv').config();
 @Module({
   imports: [
     // TypeOrmModule.forFeature([Message, Chat]),
     // GatewayModule,
+    FileModule,
     TeacherModule,
     InstrumentModule,
     MessageModule,
@@ -73,6 +76,7 @@ require('dotenv').config();
         Chat,
         Teacher,
         Instrument,
+        File
       ],
       synchronize: true,
     }),

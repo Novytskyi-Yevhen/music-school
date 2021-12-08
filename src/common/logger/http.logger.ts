@@ -10,15 +10,18 @@ export class HTTPLogger implements NestMiddleware {
     const { ip, method } = request;
     const userAgent = request.get('user-agent') || '';
 
-
     let send = response.send;
     response.send = (body) => {
-      if (!!JSON.parse(body).errorName) {
+      
+      if (body !== undefined && typeof body === 'object' && body.errorName) {
         response.send = send;
         return response.send(body);
       }
+      if (body === undefined) {
+        body = {body: undefined};
+      }
       const { statusCode } = response;
-      
+      const {buffer , ...bodyWithoutBuffer} = body;
       this.logger.log(
         `${method} ${
           request.url
@@ -26,9 +29,9 @@ export class HTTPLogger implements NestMiddleware {
           request.body,
         )} Query: ${JSON.stringify(request.query)} Params: ${JSON.stringify(
           request.params,
-        )} ${`\n Response body: ${body}`}`,
+        )} ${`\n Response body: ${bodyWithoutBuffer}`}`,
       );
-      response.send = send;      
+      response.send = send;
       return response.send(body);
     };
     next();

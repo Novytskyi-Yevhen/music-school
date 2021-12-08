@@ -11,3 +11,4 @@ export * from './chat.entity';
 export * from './message.entity';
 export * from './instrument.entity';
 export * from './teacher.entity';
+export * from './file.entity';

@@ -8,7 +8,7 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Chat, Child, Message, Order, Role } from '.';
+import { Chat, Child, File, Message, Order, Role } from '.';
 import {
   IsEmail,
   IsNotEmpty,
@@ -57,12 +57,12 @@ export class User {
   @IsPhoneNumber()
   phone: string;
 
-  @OneToMany((type) => Order, (order) => order.user)
+  @OneToMany((type) => Order, (order) => order.user, { eager: true })
   @IsArray()
   @IsObject({each: true})
   orders: Order[];
 
-  @OneToMany((type) => Child, (child) => child.user)
+  @OneToMany((type) => Child, (child) => child.user, { eager: true })
   @IsArray()
   @IsObject({each: true})
   childs: Child[];
@@ -84,4 +84,7 @@ export class User {
   @OneToOne(() => Teacher)
   @JoinTable()
   teacher: Teacher;
+
+  @OneToMany(type => File, file => file.user, {eager: true})
+  files: File[];
 }
