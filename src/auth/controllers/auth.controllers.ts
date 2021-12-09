@@ -19,6 +19,7 @@ import { registrationRole } from 'src/config';
 import { AuthGuard } from '@nestjs/passport';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
+import * as bcrypt from 'bcrypt';
 
 @Controller()
 export class AuthController {
@@ -44,6 +45,8 @@ export class AuthController {
   @Post('/register')
   async register(@Body() data: UsersDTO) {
     data.role = await this.roleService.findOneByName(registrationRole);
+    const salt = await bcrypt.genSalt();
+    data.password = await bcrypt.hash(data.password, salt);
     const newUser = await this.userService.create(data);  
     return await this.authService.jwtLogin(newUser, 'register');
   }
