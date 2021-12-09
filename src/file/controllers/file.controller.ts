@@ -8,18 +8,23 @@ import {
   Param,
   Post,
   Query,
+  Req,
   Res,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Response } from 'express';
+import { JwtAuthGuard } from 'src/auth/guards';
+import { UserService } from 'src/users/providers';
 import { FileService } from '../providers';
 
 @Controller('file')
 export class FileControllerextends {
   constructor(
     private fileService: FileService,
+    private userService: UserService
   ) {}
 
   @Get()
@@ -55,7 +60,12 @@ export class FileControllerextends {
   }
 
   @Get('getFile')
-  async getFile(@Res() res: Response, @Query('fileId') fileId: number) {
+  @UseGuards(JwtAuthGuard)
+  async getFile(@Res() res: Response, @Query('fileId') fileId: number, @Req() req) {
+    const userFilesId = await (await this.userService.findOneById(req.user.id)).files.map(elem => elem.id)
+    if (!userFilesId.includes(fileId)) {
+      throw new HttpException('You do not have access to this file.', HttpStatus.FORBIDDEN);
+    }
     const file = await this.fileService.findOneById(fileId);
     const redisValue = await this.fileService.redisGet(file.redisKey);
     return res
@@ -65,14 +75,19 @@ export class FileControllerextends {
       })
       .send(Buffer.from(redisValue.data, 'base64'));
   }
-  @Delete('/delete/:id')
-  async delete(@Param('id') id: number) {
-    const file = await this.fileService.findOneById(id);
+  @Delete('/delete/:fileId')
+  @UseGuards(JwtAuthGuard)
+  async delete(@Param('fileId') fileId: number, @Req() req) {
+    const userFilesId = await (await this.userService.findOneById(req.user.id)).files.map(elem => elem.id)
+    if (!userFilesId.includes(fileId)) {
+      throw new HttpException('You do not have access to this file.', HttpStatus.FORBIDDEN);
+    }
+    const file = await this.fileService.findOneById(fileId);
     if (!(await this.fileService.redisGet(file.redisKey))) {
       throw new HttpException('Redis does not has this key. Or db does not has this id.', HttpStatus.BAD_REQUEST);
     }
     await this.fileService.redisDelete(file.redisKey);
-    let { affected } = await this.fileService.delete(id);
+    let { affected } = await this.fileService.delete(fileId);
     return affected === 0
       ? {
           statusCode: HttpStatus.BAD_REQUEST,

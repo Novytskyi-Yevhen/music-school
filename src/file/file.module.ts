@@ -6,6 +6,7 @@ import * as controllers from './controllers';
 import * as providers from './providers';
 import type { ClientOpts as RedisClientOpts } from 'redis';
 import * as redisStore from 'cache-manager-redis-store';
+import { UserModule } from 'src/users/user.module';
 require('dotenv').config();
 @Module({
   imports: [
@@ -15,9 +16,10 @@ require('dotenv').config();
       host: process.env.REDIS_LOCALHOST,
       port: Number(process.env.REDIS_PORT),
     }),
+    UserModule
   ],
   exports: [FileService],
-  providers: Object.values(providers),
+  providers: Object.values(providers), 
   controllers: Object.values(controllers),
 })
 export class FileModule {}

@@ -49,7 +49,7 @@ export class User {
   @MaxLength(15)
   password: string;
 
-  @Column('varchar')
+  @Column('varchar', {unique: true})
   @IsEmail()
   email: string;
 

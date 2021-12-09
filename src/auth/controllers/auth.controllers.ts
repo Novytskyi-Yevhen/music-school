@@ -44,7 +44,7 @@ export class AuthController {
   @Post('/register')
   async register(@Body() data: UsersDTO) {
     data.role = await this.roleService.findOneByName(registrationRole);
-    const newUser = await this.userService.create(data);
+    const newUser = await this.userService.create(data);  
     return await this.authService.jwtLogin(newUser, 'register');
   }
 
@@ -130,7 +130,12 @@ export class AuthController {
 
       return await this.register(newUser);
     } else {
-      return await this.login(req);
+      let user = await this.userService.getUserBySocialId(
+        req.user.provider,
+        req.user.socialId,
+      );
+      
+      return await this.login({user});
     }
   }
 }
