@@ -1,6 +1,7 @@
 import {
   Column,
   Entity,
+  Generated,
   JoinTable,
   ManyToMany,
   ManyToOne,
@@ -18,7 +19,7 @@ import {
   IsPhoneNumber,
   ValidateNested,
   IsArray,
-  IsString
+  IsString,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { Teacher } from './teacher.entity';
@@ -28,15 +29,19 @@ export class User {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
 
-  @Column('varchar', {unique: true, nullable: true})
+  @Column()
+  @Generated('uuid')
+  uuid: string;
+
+  @Column('varchar', { unique: true, nullable: true })
   @IsString()
   googleId: string;
 
-  @Column('varchar', {unique: true, nullable: true})
+  @Column('varchar', { unique: true, nullable: true })
   @IsString()
   facebookId: string;
 
-  @Column('varchar', {unique: true, nullable: true})
+  @Column('varchar', { unique: true, nullable: true })
   @IsString()
   linkedinId: string;
 
@@ -44,27 +49,27 @@ export class User {
   @IsNotEmpty()
   name: string;
 
-  @Column('varchar', {nullable: true})
+  @Column('varchar', { nullable: true })
   @MinLength(5)
   @MaxLength(15)
   password: string;
 
-  @Column('varchar', {unique: true})
+  @Column('varchar', { unique: true })
   @IsEmail()
   email: string;
 
-  @Column('varchar', {nullable: true})
+  @Column('varchar', { nullable: true })
   @IsPhoneNumber()
   phone: string;
 
   @OneToMany((type) => Order, (order) => order.user, { eager: true })
   @IsArray()
-  @IsObject({each: true})
+  @IsObject({ each: true })
   orders: Order[];
 
   @OneToMany((type) => Child, (child) => child.user, { eager: true })
   @IsArray()
-  @IsObject({each: true})
+  @IsObject({ each: true })
   childs: Child[];
 
   @ManyToOne((type) => Role, (role) => role.users, { eager: true })
@@ -74,17 +79,17 @@ export class User {
   @Type(() => Role)
   role: Role;
 
-  @ManyToMany(() => Chat, chat => chat.users)
+  @ManyToMany(() => Chat, (chat) => chat.users)
   @JoinTable()
   chats: Promise<Chat[]>;
 
-  @OneToMany(() => Message, message => message.user)
+  @OneToMany(() => Message, (message) => message.user)
   messages: Message[];
 
   @OneToOne(() => Teacher)
   @JoinTable()
   teacher: Teacher;
 
-  @OneToMany(type => File, file => file.user, {eager: true})
+  @OneToMany((type) => File, (file) => file.user, { eager: true })
   files: File[];
 }
