@@ -11,8 +11,8 @@ import {
   import { Type } from 'class-transformer';
 @Entity()
 export class Child{
-    @PrimaryGeneratedColumn({type: 'int'})
-    id: number;
+    @PrimaryGeneratedColumn('uuid')
+    id: string;
 
     @Column('varchar')
     @IsNotEmpty()

@@ -26,12 +26,8 @@ import { Teacher } from './teacher.entity';
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
-  id: number;
-
-  @Column()
-  @Generated('uuid')
-  uuid: string;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column('varchar', { unique: true, nullable: true })
   @IsString()

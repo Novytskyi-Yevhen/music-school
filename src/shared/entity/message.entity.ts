@@ -3,8 +3,8 @@ import { Chat, User } from '.';
 
 @Entity()
 export class Message {
-  @PrimaryGeneratedColumn({ type: 'int' })
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @ManyToOne(() => User, (user) => user.messages, {eager: true})
   user: User;

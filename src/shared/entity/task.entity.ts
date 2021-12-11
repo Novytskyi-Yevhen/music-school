@@ -4,8 +4,8 @@ import { Board } from '.';
 import { IsNotEmpty } from 'class-validator';
 @Entity()
 export class Task {
-  @PrimaryGeneratedColumn({ type: 'int' })
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column('varchar')
   @IsNotEmpty()

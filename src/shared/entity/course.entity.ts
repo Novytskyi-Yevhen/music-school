@@ -10,8 +10,8 @@ import {
   import { Type } from 'class-transformer';
 @Entity()
 export class Course{
-    @PrimaryGeneratedColumn({type: 'int'})
-    id: number;
+    @PrimaryGeneratedColumn('uuid')
+    id: string;
 
     @Column('varchar')
     @IsNotEmpty()

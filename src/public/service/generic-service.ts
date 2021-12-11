@@ -8,7 +8,7 @@ export abstract class GenericService<T> {
   async findAll(): Promise<T[]> {
     return await this.repository.find();
   }
-  async findOneById(id: number): Promise<T> {
+  async findOneById(id: string): Promise<T> {
     return await this.repository.findOne(id);
   }
   async create(data: DeepPartial<T>): Promise<T> {
@@ -16,10 +16,10 @@ export abstract class GenericService<T> {
     await this.repository.save(newObject);
     return newObject;
   }
-  async delete(id: number): Promise<DeleteResult> {
+  async delete(id: string): Promise<DeleteResult> {
     return await this.repository.delete(id);
   }
-  async update(id: number, data: QueryDeepPartialEntity<T>) {
+  async update(id: string, data: QueryDeepPartialEntity<T>) {
     await this.repository.update(id, data);
     return await this.repository.findOne(id);
   }

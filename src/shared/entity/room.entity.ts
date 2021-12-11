@@ -6,8 +6,8 @@ import { IsNotEmpty, ValidateNested, IsNotEmptyObject } from 'class-validator';
 import { Type } from 'class-transformer';
 @Entity()
 export class Room {
-  @PrimaryGeneratedColumn({ type: 'int' })
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column('varchar')
   @IsNotEmpty()

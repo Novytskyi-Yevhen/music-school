@@ -46,7 +46,4 @@ export class UserService extends GenericService<User> {
     }
     return user;
   }
-  async findByUUId(uuid: string){
-    return await this.usersRepository.findOne({uuid});
-  }
 }

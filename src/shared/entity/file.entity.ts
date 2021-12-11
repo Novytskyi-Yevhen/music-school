@@ -3,8 +3,8 @@ import { User } from ".";
 import {IsString, IsNotEmpty, IsInt} from 'class-validator';
 @Entity()
 export class File{
-    @PrimaryGeneratedColumn({type: 'int'})
-    id: number;
+    @PrimaryGeneratedColumn('uuid')
+    id: string;
 
     @Column('varchar')
     @IsString()

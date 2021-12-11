@@ -17,8 +17,8 @@ import { Type } from 'class-transformer';
 
 @Entity()
 export class Role{
-    @PrimaryGeneratedColumn({type: 'int'})
-    id: number;
+    @PrimaryGeneratedColumn('uuid')
+    id: string;
 
     @Column('varchar', {length: 255, unique: true})
     @IsNotEmpty()

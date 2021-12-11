@@ -44,14 +44,14 @@ export class UserController extends AbstractCRUDController<
   @UseGuards(JwtAuthGuard)
   @Roles('admin')
   @Get('/findOneById')
-  async findOneById(@Query('id') id: number) {
+  async findOneById(@Query('id') id: string) {
     return await super.findOneById(id);
   }
 
   @UseGuards(JwtAuthGuard)
   @Roles('admin')
   @Patch('/update/:id')
-  async update(@Param('id') id: number, @Body() data: Partial<UsersDTO>) {
+  async update(@Param('id') id: string, @Body() data: Partial<UsersDTO>) {
     return await super.update(id, data);
   }
 
@@ -65,7 +65,7 @@ export class UserController extends AbstractCRUDController<
   @UseGuards(JwtAuthGuard)
   @Roles('admin')
   @Delete('/delete/:id')
-  async delete(@Param('id') id: number) {
+  async delete(@Param('id') id: string) {
     let { affected } = await this.userService.delete(id);
     return affected === 0
       ? {

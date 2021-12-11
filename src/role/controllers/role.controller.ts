@@ -1,13 +1,9 @@
 import {
-  Body,
   Controller,
   Delete,
-  Get,
+  HttpException,
   HttpStatus,
   Param,
-  Patch,
-  Post,
-  Query,
 } from '@nestjs/common';
 import { defaultRole } from 'src/config';
 import { AbstractCRUDController } from 'src/public/controllers';
@@ -23,5 +19,25 @@ export class RoleController extends AbstractCRUDController<
 > {
   constructor(private roleService: RoleService) {
     super(roleService, 'Role');
+  }
+  @Delete('/delete/:id')
+  async delete(@Param('id') id: string) {
+    const role = await this.roleService.findOneById(id);
+    if (defaultRole.includes(role.name.toLowerCase())) {
+      throw new HttpException(
+        'This is the default role. You do not have permission to delete.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    let { affected } = await this.roleService.delete(id);
+    return affected === 0
+      ? {
+          statusCode: HttpStatus.BAD_REQUEST,
+          message: `Role for delete is not found`,
+        }
+      : {
+          statusCode: HttpStatus.OK,
+          message: `Role deleted successfully`,
+        };
   }
 }

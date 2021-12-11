@@ -32,8 +32,8 @@ export class RoomGateway
   @SubscribeMessage('newMessage')
   async newMessage(
     @MessageBody('message') message: string,
-    @MessageBody('userId') userId: number,
-    @MessageBody('chatId') chatId: number,
+    @MessageBody('userId') userId: string,
+    @MessageBody('chatId') chatId: string,
     socket: Socket,
   ) {
     const newMessage = await this.messageService.create({
@@ -46,8 +46,8 @@ export class RoomGateway
   }
 
   @SubscribeMessage('getMessages')
-  async getMessages(@MessageBody('chatId') chatId: number | { id: number }[]) {
-    if (typeof chatId === 'number') {
+  async getMessages(@MessageBody('chatId') chatId: string | { id: string }[]) {
+    if (typeof chatId === 'string') {
       const data = await this.chatService.findOneById(chatId);
       return data.messages;
     } else {
@@ -57,14 +57,14 @@ export class RoomGateway
   }
 
   @SubscribeMessage('getChats')
-  async getChats(@MessageBody('userId') userId) {
+  async getChats(@MessageBody('userId') userId: string) {
     const data = await this.userService.findOneById(userId);
     return await data.chats;
   }
 
   @SubscribeMessage('createRoom')
   async createRoom(
-    @MessageBody('usersId') usersId: { id: number }[],
+    @MessageBody('usersId') usersId: { id: string }[],
     socket: Socket,
   ) {
     const chat = await this.chatService.create({
@@ -85,7 +85,7 @@ export class RoomGateway
 
   async handleConnection(
     socket: Socket,
-    @MessageBody('userId') userId: number,
+    @MessageBody('userId') userId: string,
   ) {
     const chats = await this.getChats(userId);
     chats.forEach((elem) => {

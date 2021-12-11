@@ -3,8 +3,8 @@ import { Message, User } from '.';
 
 @Entity()
 export class Chat {
-  @PrimaryGeneratedColumn({ type: 'int' })
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column('varchar')
   name: string;

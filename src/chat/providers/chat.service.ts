@@ -12,7 +12,7 @@ export class ChatService extends GenericService<Chat> {
   async getGeneralChatId(){
       return await (await this.chatRepository.findOne({ where: {name: 'GeneralChat'}, select:['id']})).id;
   }
-  async getUserChats(chatsId: number[]){
+  async getUserChats(chatsId: string[]){
       return await this.chatRepository.find({where: {id: In(chatsId)}})
   }
 }

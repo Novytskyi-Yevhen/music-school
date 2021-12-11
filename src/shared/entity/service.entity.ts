@@ -10,8 +10,8 @@ import { IsNotEmpty, IsIn } from 'class-validator';
 
 @Entity()
 export class Service {
-  @PrimaryGeneratedColumn({ type: 'int' })
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column('varchar')
   @IsNotEmpty()

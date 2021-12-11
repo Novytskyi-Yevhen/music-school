@@ -33,7 +33,7 @@ export class FileControllerextends {
   }
 
   @Get('/findOneById')
-  async findOneById(@Query('id') id: number) {
+  async findOneById(@Query('id') id: string) {
     return await this.fileService.findOneById(id);
   }
 
@@ -41,7 +41,7 @@ export class FileControllerextends {
   @UseInterceptors(FileInterceptor('file'))
   async uploadFile(
     @UploadedFile() file: Express.Multer.File,
-    @Body('userId') userId: number,
+    @Body('userId') userId: string,
   ) {
     const { originalname, mimetype, size } = file;
     const redisKey = `${userId}:${file.mimetype}:${file.originalname}`;
@@ -54,6 +54,7 @@ export class FileControllerextends {
       mimeType: mimetype,
       size,
       redisKey,
+      user: {id: userId}
     });
     await this.fileService.redisSet(newFile.redisKey, file.buffer);
     return newFile;
@@ -61,8 +62,8 @@ export class FileControllerextends {
 
   @Get('getFile')
   @UseGuards(JwtAuthGuard)
-  async getFile(@Res() res: Response, @Query('fileId') fileId: number, @Req() req) {
-    const userFilesId = await (await this.userService.findOneById(req.user.id)).files.map(elem => elem.id)
+  async getFile(@Res() res: Response, @Query('fileId') fileId: string, @Req() req) {
+    const userFilesId = await (await this.userService.findOneById(req.user.id)).files.map(elem => elem.id);
     if (!userFilesId.includes(fileId)) {
       throw new HttpException('You do not have access to this file.', HttpStatus.FORBIDDEN);
     }
@@ -77,7 +78,7 @@ export class FileControllerextends {
   }
   @Delete('/delete/:fileId')
   @UseGuards(JwtAuthGuard)
-  async delete(@Param('fileId') fileId: number, @Req() req) {
+  async delete(@Param('fileId') fileId: string, @Req() req) {
     const userFilesId = await (await this.userService.findOneById(req.user.id)).files.map(elem => elem.id)
     if (!userFilesId.includes(fileId)) {
       throw new HttpException('You do not have access to this file.', HttpStatus.FORBIDDEN);

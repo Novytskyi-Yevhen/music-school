@@ -23,13 +23,13 @@ export abstract class AbstractCRUDController<
   }
 
   @Get('/findOneById')
-  async findOneById(@Query('id') id: number) {
+  async findOneById(@Query('id') id: string) {
     return await this.service.findOneById(id);
   }
 
   @Patch('/update/:id')
   async update(
-    @Param('id') id: number,
+    @Param('id') id: string,
     @Body() data: QueryDeepPartialEntity<Entity>,
   ) {
     return await this.service.update(id, data);
@@ -41,7 +41,7 @@ export abstract class AbstractCRUDController<
   }
 
   @Delete('/delete/:id')
-  async delete(@Param('id') id: number) {
+  async delete(@Param('id') id: string) {
     let { affected } = await this.service.delete(id);
     return affected === 0
       ? {

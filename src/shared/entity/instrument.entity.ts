@@ -3,8 +3,8 @@ import { Teacher } from "./teacher.entity";
 
 @Entity()
 export class Instrument{
-    @PrimaryGeneratedColumn({type: 'int'})
-    id: number;
+    @PrimaryGeneratedColumn('uuid')
+    id: string;
 
     @Column('varchar')
     name: string;
