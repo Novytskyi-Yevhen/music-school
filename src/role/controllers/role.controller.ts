@@ -6,7 +6,7 @@ import {
   Param,
 } from '@nestjs/common';
 import { defaultRole } from 'src/config';
-import { AbstractCRUDController } from 'src/public/controllers';
+import { AbstractCRUDController } from 'src/shared/controllers';
 import { Role } from 'src/shared/entity';
 import { RoleDTO } from '../dto';
 import { RoleService } from '../providers';

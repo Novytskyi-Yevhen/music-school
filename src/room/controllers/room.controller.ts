@@ -1,5 +1,5 @@
 import { Controller } from '@nestjs/common';
-import { AbstractCRUDController } from 'src/public/controllers';
+import { AbstractCRUDController } from 'src/shared/controllers';
 import { Room } from 'src/shared/entity';
 import { roomDTO } from '../DTO';
 import { RoomService } from '../providers';

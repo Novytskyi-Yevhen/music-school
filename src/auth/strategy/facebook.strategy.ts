@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-facebook';
-import { getUser } from 'src/public/helpers';
+import { getUser } from 'src/shared/helpers';
 require('dotenv').config();
 @Injectable()
 export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {

@@ -14,7 +14,7 @@ import {
 } from 'class-validator';
 
 import { Type } from 'class-transformer';
-import { IdDTO } from 'src/public/dto';
+import { IdDTO } from 'src/shared/dto';
 export class ChildDTO {
   @IsString()
   @IsNotEmpty()

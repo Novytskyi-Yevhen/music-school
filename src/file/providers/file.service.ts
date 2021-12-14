@@ -1,7 +1,7 @@
 import { CACHE_MANAGER, Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Cache } from 'cache-manager';
-import { GenericService } from 'src/public/service';
+import { GenericService } from 'src/shared/service';
 import { File } from 'src/shared/entity';
 import { Repository } from 'typeorm';
 

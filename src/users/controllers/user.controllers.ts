@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards';
 import { Roles } from 'src/common/decorators/roles.decorators';
-import { AbstractCRUDController } from 'src/public/controllers';
+import { AbstractCRUDController } from 'src/shared/controllers';
 import { User } from 'src/shared/entity';
 import { UsersDTO } from '../dto/usersDTO';
 import { UserService } from '../providers/user.service';

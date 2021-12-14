@@ -1,5 +1,5 @@
 import { Controller } from '@nestjs/common';
-import { AbstractCRUDController } from 'src/public/controllers';
+import { AbstractCRUDController } from 'src/shared/controllers';
 import { Chat } from 'src/shared/entity';
 import { ChatDTO } from '../DTO';
 import { ChatService } from '../providers';

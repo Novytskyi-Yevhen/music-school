@@ -1,5 +1,5 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { GenericService } from 'src/public/service';
+import { GenericService } from 'src/shared/service';
 import { Board } from 'src/shared/entity';
 import { Repository } from 'typeorm';
 

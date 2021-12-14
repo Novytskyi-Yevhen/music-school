@@ -1,5 +1,5 @@
 import { Controller } from '@nestjs/common';
-import { AbstractCRUDController } from 'src/public/controllers';
+import { AbstractCRUDController } from 'src/shared/controllers';
 import { Instrument } from 'src/shared/entity';
 import { InstrumentDTO } from '../DTO';
 import { InstrumentService } from '../providers';

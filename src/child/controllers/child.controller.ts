@@ -1,5 +1,5 @@
 import { Controller } from '@nestjs/common';
-import { AbstractCRUDController } from 'src/public/controllers';
+import { AbstractCRUDController } from 'src/shared/controllers';
 import { Child } from 'src/shared/entity';
 import { ChildDTO } from '../DTO';
 import { ChildService } from '../providers';
