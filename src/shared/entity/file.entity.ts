@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinTable, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { User } from ".";
 import {IsString, IsNotEmpty, IsInt} from 'class-validator';
 @Entity()
@@ -23,9 +23,16 @@ export class File{
 
     @Column('varchar')
     @IsString()
-    @IsNotEmpty()
+    awsLink: string;
+
+    @Column('varchar')
+    @IsString()
+    awsKey: string;
+
+    @Column('varchar')
+    @IsString()
     redisKey: string;
 
-    @ManyToOne(type => User, user => user.files)
+    @ManyToOne(type => User, user => user.files, {eager: true})
     user: User;
 }

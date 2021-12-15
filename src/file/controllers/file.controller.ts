@@ -21,7 +21,7 @@ import { UserService } from 'src/users/providers';
 import { FileService } from '../providers';
 
 @Controller('file')
-export class FileControllerextends {
+export class FileController {
   constructor(
     private fileService: FileService,
     private userService: UserService
@@ -63,7 +63,7 @@ export class FileControllerextends {
   @Get('getFile')
   @UseGuards(JwtAuthGuard)
   async getFile(@Res() res: Response, @Query('fileId') fileId: string, @Req() req) {
-    const userFilesId = await (await this.userService.findOneById(req.user.id)).files.map(elem => elem.id);
+    const userFilesId = await (await (await this.userService.findOneById(req.user.id)).files).map(elem => elem.id);
     if (!userFilesId.includes(fileId)) {
       throw new HttpException('You do not have access to this file.', HttpStatus.FORBIDDEN);
     }
@@ -79,7 +79,7 @@ export class FileControllerextends {
   @Delete('/delete/:fileId')
   @UseGuards(JwtAuthGuard)
   async delete(@Param('fileId') fileId: string, @Req() req) {
-    const userFilesId = await (await this.userService.findOneById(req.user.id)).files.map(elem => elem.id)
+    const userFilesId = await (await (await this.userService.findOneById(req.user.id)).files).map(elem => elem.id)
     if (!userFilesId.includes(fileId)) {
       throw new HttpException('You do not have access to this file.', HttpStatus.FORBIDDEN);
     }

@@ -86,6 +86,7 @@ export class User {
   @JoinTable()
   teacher: Teacher;
 
-  @OneToMany((type) => File, (file) => file.user, { eager: true })
-  files: File[];
+  @OneToMany((type) => File, (file) => file.user)
+  @JoinTable()
+  files: Promise<File[]>;
 }
