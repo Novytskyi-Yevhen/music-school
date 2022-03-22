@@ -12,17 +12,15 @@ services:
       POSTGRES_USER: "${POSTGRES_USER}"
     ports:
       - "${POSTGRES_PORT}:${POSTGRES_PORT}"
-
-  # adminer:
-  #   image: adminer
-  #   restart: always
-  #   ports:
-  #     - 8080:8080
+    networks:
+      - nest
 
   redis:
     image: "redis:alpine"
     ports:
       - "6379:6379"
+    networks:
+      - nest
  
   redis-commander:
     image: rediscommander/redis-commander:latest
@@ -31,4 +29,34 @@ services:
     ports:
       - "8081:8081"
     depends_on:
-        - redis
+      - redis
+
+
+
+  dev:
+    container_name: nestjs_api_dev
+    image: nestjs-api-dev:1.0.0
+    build:
+      context: .
+      target: development
+      dockerfile: ./Dockerfile
+    command: npm run start:dev
+    ports:
+      # - 3000:3000
+      - 9229:9229
+    
+    networks:
+      - nest
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    restart: unless-stopped
+  
+networks:
+  nest:
+    ipam:
+     config:
+       - subnet: 172.22.0.1/16
+         gateway: 172.22.0.1
+
+

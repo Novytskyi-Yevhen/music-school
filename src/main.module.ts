@@ -29,12 +29,13 @@ import { RoomModule } from './room/room.module';
 import { TaskModule } from './task/task.module';
 import { BoardModule } from './board/board.module';
 import { GatewayModule } from './websocket/gateway.module';
-import { RoomGateway } from './websocket/gateway';
+// import { RoomGateway } from './websocket/gateway';
 import { ChatModule } from './chat/chat.module';
 import { MessageModule } from './message/message.module';
 import { InstrumentModule } from './instrument/instrument.module';
 import { TeacherModule } from './teacher/teacher.module';
 import { FileModule } from './file/file.module';
+import { AppGateway } from './websocket/gateway';
 require('dotenv').config();
 @Module({
   imports: [
@@ -86,8 +87,8 @@ require('dotenv').config();
       provide: 'APP_GUARD',
       useClass: RolesGuard,
     },
-    // AppGateway,
-    RoomGateway,
+    AppGateway,
+    // RoomGateway,
   ],
 })
 export class MainModule {

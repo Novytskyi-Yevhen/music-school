@@ -1,7 +1,6 @@
 import {IsEmail, ValidateNested, IsNotEmpty, IsObject, MinLength, MaxLength, IsPhoneNumber } from 'class-validator';
 import {Type} from 'class-transformer';
 import { IdDTO } from 'src/shared/dto';
-
 export class UsersDTO {
   @IsNotEmpty()
   name: string;

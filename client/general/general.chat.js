@@ -5,7 +5,7 @@ const form = document.getElementById('form');
 
 const userIdInput = document.getElementById('userIdInput');
 const userIdForm = document.getElementById('userId');
-let userId = 1;
+// let userId = 1;
 
 userIdForm.addEventListener('submit', (event) => {
   event.preventDefault();
@@ -23,6 +23,8 @@ socket.emit('getGeneralChatId', (data) => {
 
 form.addEventListener('submit', (event) => {
   event.preventDefault();
+  userId = userIdInput.value;
+  console.log(userId);
   userId
     ? socket.emit('newMessage', {
         chatId: generalChatId,

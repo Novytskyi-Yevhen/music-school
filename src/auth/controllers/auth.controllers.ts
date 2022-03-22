@@ -19,7 +19,7 @@ import { registrationRole } from 'src/config';
 import { AuthGuard } from '@nestjs/passport';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 
 @Controller()
 export class AuthController {
